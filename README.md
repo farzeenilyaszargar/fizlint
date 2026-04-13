@@ -4,6 +4,7 @@ Everything Is Done Here From The Basics!
 
 fizlint --> **f**arzeen **i**lyas **z**argar **lint**
 
+hosted at https://fizlint.vercel.app
 
 ##### Flow:
 
@@ -12,17 +13,24 @@ Editor --------> server ----------------> parser -----> linting engine ----> dia
 
 
 Topics Learnt:
-- [ ] AST
-- [ ] CLI Packaging
+- AST
+- CLI Packaging & Building Format
+- LSP
+- Parser
 
 
 I need several components to do this:
 
 - First I need a file reader that takes input from my editor (say VS Code) and recounstructs the document for the server using LSP protocol
 
+'''
 while (running)
     message = nextMessage(stdin)
     dispatch(message)
+'''
+
+
+
 
 
 
