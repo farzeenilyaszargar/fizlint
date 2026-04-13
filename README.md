@@ -23,11 +23,11 @@ I need several components to do this:
 
 - First I need a file reader that takes input from my editor (say VS Code) and recounstructs the document for the server using LSP protocol
 
-'''
+```
 while (running)
     message = nextMessage(stdin)
     dispatch(message)
-'''
+```
 
 
 
