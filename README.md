@@ -1,10 +1,8 @@
-## fizlint - Live Linting Project 
+## Fizlint | Live Linting  
 
 Everything Is Done Here From The Basics!
 
-fizlint --> **f**arzeen **i**lyas **z**argar **lint**
-
-hosted at https://fizlint.vercel.app
+website: https://fizlint.vercel.app
 
 ### Flow:
 
