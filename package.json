@@ -1,10 +1,14 @@
 {
   "name": "fizzylint",
-  "version": "0.0.4",
-  "description": "Everything Is Done Here From The Basics!",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "A fast, minimal lint CLI for JavaScript and TypeScript.",
+  "main": "lib/core.js",
+  "type": "commonjs",
+  "bin": {
+    "fizzylint": "bin/index.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -12,22 +16,15 @@
   },
   "keywords": [
     "linter",
-    "live linter",
-    "fizlint",
-    "code quality",
-    "static analysis"
+    "javascript",
+    "typescript",
+    "cli",
+    "static-analysis"
   ],
   "author": "farzeen ilyas zargar",
   "license": "MIT",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/farzeenilyaszargar/fizlint/issues"
   },
-  "homepage": "https://github.com/farzeenilyaszargar/fizlint#readme",
-  "bin": {
-    "fizzylint": "bin/index.js"
-  },
-  "dependencies": {
-    "fizzylint": "^0.0.4"
-  }
+  "homepage": "https://github.com/farzeenilyaszargar/fizlint#readme"
 }

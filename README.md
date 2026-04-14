@@ -1,37 +1,51 @@
-## Fizlint | Live Linting  
+# fizzylint
 
-Everything Is Done Here From The Basics!
+`fizzylint` is a minimal JavaScript and TypeScript lint CLI with a clean terminal interface, safe autofixes, and practical rules for day-to-day code review.
 
-website: https://fizlint.vercel.app
+Hosted docs: https://fizlint.vercel.app
 
-### Flow:
+## What It Checks
 
-Editor ----(lsp)----> server --------(plain text)--------> parser -----> linting engine ----> diagnostics --------(lsp message)-------> Editor
+- loose equality (`==`, `!=`)
+- `var` declarations
+- `console.log`, `console.debug`, `console.info`
+- `debugger` statements
+- duplicate imports
+- trailing whitespace
+- empty blocks
+- TODO / FIXME comments
+- `let` declarations that can be `const`
+- explicit `any` in TypeScript
 
+## Safe Fixes
 
-### Topics Learnt:
-- AST
-- CLI Packaging & Building Format
-- LSP
-- Parser
+`fizzylint fix` currently autofixes:
 
+- trailing whitespace
+- loose equality to strict equality
+- `let` to `const` when the variable is never reassigned
 
-### Plan
-I need several components to do this:
+## Usage
 
-- First I need a file reader that takes input from my editor (say VS Code) and recounstructs the document for the server using LSP protocol
-
+```bash
+fizzylint lint src
+fizzylint fix src
+fizzylint lint src --json
+fizzylint lint --stdin --stdin-filename src/example.ts
 ```
-while (running)
-    message = nextMessage(stdin)
-    dispatch(message)
+
+## Options
+
+```bash
+--json
+--quiet
+--no-color
+--ext .js,.jsx,.ts,.tsx
+--stdin
+--stdin-filename <name>
+--max-warnings <count>
 ```
 
+## Notes
 
-
-
-
-
-- Basic Website For Helping In Downloading of CLI (using npm or curl)
-
-
+The CLI is intentionally lightweight and heuristic-driven, so it stays fast without requiring a heavy parser pipeline.
