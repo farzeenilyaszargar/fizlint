@@ -10,16 +10,28 @@ const {
   summarizeResults,
 } = require('../lib/core');
 
-function main() {
+// ye bas CLI ka starting point hai, actual logic core file me hai
+function main()
+{
   const options = parseArgs(process.argv.slice(2));
 
-  if (options.command === 'help') {
+  if (options.command === 'help')
+  {
     process.stdout.write(`${printHelp()}\n`);
     return;
   }
 
   const files = collectFiles(options.target);
-  const results = options.command === 'fix' ? fixFiles(files) : lintFiles(files);
+  let results = [];
+
+  if (options.command === 'fix')
+  {
+    results = fixFiles(files);
+  }
+  else
+  {
+    results = lintFiles(files);
+  }
 
   process.stdout.write(`${formatReport(results, options)}\n`);
 

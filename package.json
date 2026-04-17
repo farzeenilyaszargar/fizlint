@@ -1,14 +1,11 @@
 {
   "name": "fizzylint",
-  "version": "0.1.0",
-  "description": "A fast, minimal lint CLI for JavaScript and TypeScript.",
+  "version": "0.1.3",
+  "description": "Small JS and TS lint CLI.",
   "main": "lib/core.js",
   "type": "commonjs",
   "bin": {
     "fizzylint": "bin/index.js"
-  },
-  "scripts": {
-    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -18,13 +15,12 @@
     "linter",
     "javascript",
     "typescript",
-    "cli",
-    "static-analysis"
+    "cli"
   ],
   "author": "farzeen ilyas zargar",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/farzeenilyaszargar/fizlint/issues"
   },
-  "homepage": "https://github.com/farzeenilyaszargar/fizlint#readme"
+  "homepage": "https://fizlint.vercel.app"
 }
