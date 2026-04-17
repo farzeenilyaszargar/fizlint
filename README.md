@@ -1,51 +1,63 @@
-# fizzylint
+# fizzylint CLI
 
-`fizzylint` is a minimal JavaScript and TypeScript lint CLI with a clean terminal interface, safe autofixes, and practical rules for day-to-day code review.
+`fizzylint` is a lightweight JavaScript and TypeScript linter for terminal use.
 
-Hosted docs: https://fizlint.vercel.app
+Docs website: https://fizlint.vercel.app
 
-## What It Checks
+## What It Does
 
+The CLI scans `.js`, `.jsx`, `.ts`, and `.tsx` files and reports:
+
+- trailing whitespace
 - loose equality (`==`, `!=`)
-- `var` declarations
+- `var` usage
 - `console.log`, `console.debug`, `console.info`
 - `debugger` statements
-- duplicate imports
-- trailing whitespace
-- empty blocks
-- TODO / FIXME comments
-- `let` declarations that can be `const`
-- explicit `any` in TypeScript
 
-## Safe Fixes
+It ignores common build/output folders like `.git`, `node_modules`, `.next`, `dist`, `build`, and `coverage`.
 
-`fizzylint fix` currently autofixes:
+## Auto-fix Support
 
-- trailing whitespace
-- loose equality to strict equality
-- `let` to `const` when the variable is never reassigned
+`fizzylint fix` applies only safe built-in fixes:
 
-## Usage
+- removes trailing whitespace
+- converts `==` to `===`
+- converts `!=` to `!==`
+
+## Commands
 
 ```bash
-fizzylint lint src
-fizzylint fix src
-fizzylint lint src --json
-fizzylint lint --stdin --stdin-filename src/example.ts
+fizzylint
+fizzylint lint [target]
+fizzylint fix [target]
+fizzylint help
 ```
+
+- `target` defaults to the current directory (`.`)
+- `target` can be a file path or directory path
 
 ## Options
 
 ```bash
---json
---quiet
 --no-color
---ext .js,.jsx,.ts,.tsx
---stdin
---stdin-filename <name>
---max-warnings <count>
+--help
+-h
+```
+
+## Install / Run
+
+```bash
+npx fizzylint lint .
+npx fizzylint fix .
+```
+
+or install globally:
+
+```bash
+npm i -g fizzylint
+fizzylint lint .
 ```
 
 ## Notes
 
-The CLI is intentionally lightweight and heuristic-driven, so it stays fast without requiring a heavy parser pipeline.
+This is a small heuristic linter and does not use a full AST/parser pipeline.
