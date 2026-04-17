@@ -1,6 +1,6 @@
 {
   "name": "fizzylint",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Small JS and TS lint CLI.",
   "main": "lib/core.js",
   "type": "commonjs",
