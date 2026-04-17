@@ -10,7 +10,7 @@ const {
   summarizeResults,
 } = require('../lib/core');
 
-// ye bas CLI ka starting point hai, actual logic core file me hai
+// main function runner 
 function main()
 {
   const options = parseArgs(process.argv.slice(2));
