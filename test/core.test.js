@@ -3,67 +3,55 @@ const assert = require('node:assert/strict');
 
 const {
   applyFixes,
-  formatPrettyReport,
+  formatReport,
   lintText,
   parseArgs,
   summarizeResults,
 } = require('../lib/core');
 
-test('parseArgs supports fix mode and common flags', () => {
-  const options = parseArgs(['fix', 'src', '--quiet', '--ext', '.js,.ts', '--max-warnings', '3']);
-  assert.equal(options.command, 'fix');
-  assert.equal(options.target, 'src');
-  assert.equal(options.quiet, true);
-  assert.deepEqual(options.extensions, ['.js', '.ts']);
-  assert.equal(options.maxWarnings, 3);
+test('parseArgs keeps the CLI really small', () => {
+  assert.deepEqual(parseArgs([]), { command: 'lint', target: '.', color: process.stdout.isTTY });
+  assert.equal(parseArgs(['fix', 'src']).command, 'fix');
+  assert.equal(parseArgs(['src']).target, 'src');
+  assert.equal(parseArgs(['help']).command, 'help');
 });
 
-test('lintText reports JS and TS focused rules', () => {
+test('lintText catches the simple classroom-size rules', () => {
   const source = [
-    "import { a } from './x';",
-    "import { b } from './x';",
-    'let count = 1;  ',
-    'if (count == 1) { console.log(count); }',
+    'var total = 1;  ',
+    'if (total == 1) { console.log(total); }',
     'debugger;',
-    'const payload: any = count;',
-    '// TODO tighten this flow',
-    '',
   ].join('\n');
 
-  const issues = lintText(source, 'sample.ts');
-  const ids = issues.map(issue => issue.ruleId);
+  const rules = lintText(source, 'demo.js').map(issue => issue.rule);
 
-  assert.ok(ids.includes('imports.no-duplicate-imports'));
-  assert.ok(ids.includes('style.prefer-const'));
-  assert.ok(ids.includes('style.trailing-whitespace'));
-  assert.ok(ids.includes('correctness.eqeqeq'));
-  assert.ok(ids.includes('best-practices.no-console'));
-  assert.ok(ids.includes('best-practices.no-debugger'));
-  assert.ok(ids.includes('typescript.no-explicit-any'));
-  assert.ok(ids.includes('maintainability.todo-comment'));
+  assert.ok(rules.includes('no-var'));
+  assert.ok(rules.includes('trailing-whitespace'));
+  assert.ok(rules.includes('eqeqeq'));
+  assert.ok(rules.includes('no-console'));
+  assert.ok(rules.includes('no-debugger'));
 });
 
-test('applyFixes upgrades loose equality, trailing whitespace, and let to const', () => {
-  const source = 'let count = 1;  \nif (count == 1) {\n  return count;\n}\n';
-  const issues = lintText(source, 'demo.ts');
-  const fixed = applyFixes(source, issues);
+test('applyFixes only changes the safe fix rules', () => {
+  const source = 'if (count == 1) {  \n  return count;\n}\n';
+  const fixed = applyFixes(source, lintText(source, 'demo.js'));
 
-  assert.equal(fixed.applied > 0, true);
-  assert.equal(fixed.output.includes('const count = 1;'), true);
-  assert.equal(fixed.output.includes('count === 1'), true);
-  assert.equal(fixed.output.includes('1;  '), false);
+  assert.equal(fixed.applied, 2);
+  assert.equal(fixed.output.includes('==='), true);
+  assert.equal(fixed.output.includes('{  \n'), false);
 });
 
-test('pretty formatter prints a minimal summary', () => {
-  const issues = lintText('const value = 1;\n', 'clean.js');
-  const report = formatPrettyReport([{ file: 'clean.js', issues, fixesApplied: 0 }], { color: false, quiet: false });
+test('formatReport prints a compact summary', () => {
+  const report = formatReport([{ file: 'clean.js', issues: [], fixed: 0 }], { color: false });
   assert.ok(report.includes('fizzylint'));
-  assert.ok(report.includes('files'));
+  assert.ok(report.includes('clean'));
 });
 
-test('summarizeResults counts severities and fixes', () => {
-  const issues = lintText('debugger;\n', 'broken.js');
-  const summary = summarizeResults([{ file: 'broken.js', issues, fixesApplied: 2 }]);
+test('summarizeResults counts levels', () => {
+  const summary = summarizeResults([
+    { file: 'demo.js', issues: lintText('debugger;\n', 'demo.js'), fixed: 1 },
+  ]);
+
   assert.equal(summary.errors, 1);
-  assert.equal(summary.fixesApplied, 2);
+  assert.equal(summary.fixed, 1);
 });
